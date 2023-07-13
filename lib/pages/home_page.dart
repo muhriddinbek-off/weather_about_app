@@ -5,7 +5,6 @@ import 'package:weather_about_app/widgets/weather_time.dart';
 import '../core/weather.dart';
 import '../widgets/bottom_part.dart';
 import '../widgets/week_info.dart';
-import 'drawer.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -23,7 +22,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: const Color(0xFF131313),
-        drawer: const DrawerChange(),
+        drawer: const Drawer(),
         appBar: AppBar(
           elevation: 0,
           backgroundColor: const Color(0xFF131313),
