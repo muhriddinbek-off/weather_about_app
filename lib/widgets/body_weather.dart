@@ -20,7 +20,7 @@ class _BodyWeatherState extends State<BodyWeather> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: Provider.of<SwitchOnOff>(context).weatherRandom(),
+      future: Provider.of<SwitchOnOff>(context, listen: false).weatherRandom(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(
@@ -28,7 +28,7 @@ class _BodyWeatherState extends State<BodyWeather> {
           );
         }
         if (snapshot.connectionState == ConnectionState.done) {
-          WeatherModal? data = Provider.of<SwitchOnOff>(context).weatherModal;
+          WeatherModal? data = Provider.of<SwitchOnOff>(context, listen: false).weatherModal;
           return ListView(
             children: [
               Row(
