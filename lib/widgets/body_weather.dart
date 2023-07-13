@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:weather_about_app/widgets/weather_time.dart';
 import 'package:weather_about_app/widgets/week_info.dart';
 
-import '../core/weather.dart';
+import '../modal/weather_random.dart';
+import '../providers/switch.dart';
 import 'bottom_part.dart';
 
 class BodyWeather extends StatefulWidget {
@@ -18,33 +20,34 @@ class _BodyWeatherState extends State<BodyWeather> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: weatherRandom(),
+      future: Provider.of<SwitchOnOff>(context).weatherRandom(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(
             child: CircularProgressIndicator(),
           );
         }
-        if (snapshot.hasData) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          WeatherModal? data = Provider.of<SwitchOnOff>(context).weatherModal;
           return ListView(
             children: [
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text('${snapshot.data!.temp}', style: const TextStyle(fontSize: 70, fontWeight: FontWeight.w400, color: Colors.white)),
+                  Text('${data!.temp}', style: const TextStyle(fontSize: 70, fontWeight: FontWeight.w400, color: Colors.white)),
                   const Padding(padding: EdgeInsets.only(top: 24), child: Icon(Icons.circle_outlined, color: Colors.white, size: 17)),
                   Column(
                     children: [
                       const Icon(Icons.cloud, color: Colors.white, size: 52),
-                      Text('${snapshot.data!.tempmin}° / ${snapshot.data!.tempmax}° Feels like ${snapshot.data!.humidity}°',
+                      Text('${data.tempmin}° / ${data.tempmax}° Feels like ${data.humidity}°',
                           style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w400, color: Colors.white, height: 1.8)),
-                      Text(snapshot.data!.datatime, style: const TextStyle(fontSize: 9, fontWeight: FontWeight.w400, color: Colors.white)),
+                      Text(data.datatime, style: const TextStyle(fontSize: 9, fontWeight: FontWeight.w400, color: Colors.white)),
                     ],
                   ),
                 ],
               ),
-              WeekInfo(title: 'TODAY', icons1: Icons.sunny, icons2: Icons.nightlight_round_sharp, level: '${snapshot.data!.humidity}', day: '${snapshot.data!.tempmin} / ${snapshot.data!.tempmax}°'),
+              WeekInfo(title: 'TODAY', icons1: Icons.sunny, icons2: Icons.nightlight_round_sharp, level: '${data.humidity}', day: '${data.tempmin} / ${data.tempmax}°'),
               const WeekInfo(title: 'FRIDAY', icons1: Icons.sunny, icons2: Icons.nightlight_round_sharp, level: '25', day: '19° / 25°'),
               const WeekInfo(title: 'SATURDAY', icons1: Icons.cloud, icons2: Icons.thunderstorm, level: '40', day: '20° / 15°'),
               const WeekInfo(title: 'SUNDAY', icons1: Icons.cloud, icons2: Icons.nights_stay, level: '11', day: '23° / 19°'),
@@ -75,9 +78,9 @@ class _BodyWeatherState extends State<BodyWeather> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  BottomPart(image: 'assets/images/3.png', name: 'HUMIDITY', text: '${snapshot.data!.humidity}'),
-                  BottomPart(image: 'assets/images/5.png', name: 'WIND', text: '${snapshot.data!.windspeed} km/h'),
-                  BottomPart(image: 'assets/images/4.png', name: 'UV', text: '${snapshot.data!.uvindex}'),
+                  BottomPart(image: 'assets/images/3.png', name: 'HUMIDITY', text: '${data.humidity}'),
+                  BottomPart(image: 'assets/images/5.png', name: 'WIND', text: '${data.windspeed} km/h'),
+                  BottomPart(image: 'assets/images/4.png', name: 'UV', text: '${data.uvindex}'),
                 ],
               )
             ],

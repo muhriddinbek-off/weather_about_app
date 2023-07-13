@@ -10,22 +10,22 @@ class DrawerChange extends StatefulWidget {
 }
 
 class _DrawerChangeState extends State<DrawerChange> {
-
   @override
   Widget build(BuildContext context) {
     return Drawer(
       child: ListView(
         children: [
           Container(
-              color: Colors.amber,
-              child: DrawerHeader(
-                  child: Switch(
+            color: Colors.amber,
+            child: DrawerHeader(
+              child: Switch(
                 value: Provider.of<SwitchOnOff>(context).isDay,
                 onChanged: (value) {
-                   Provider.of<SwitchOnOff>(context, listen: false).changeStatus(value);
-            
+                  Provider.of<SwitchOnOff>(context, listen: false).changeStatus(value);
                 },
-              ))),
+              ),
+            ),
+          ),
         ],
       ),
     );
